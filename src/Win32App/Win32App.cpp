@@ -4,17 +4,15 @@
 #include <new>
 
 
-template<>
-Win32AppT<Win32AppConfig>::Win32AppT(int argc, wch**argv)
-    : argc_(argc), argv_(argv)
+Win32App::Win32AppT(int argc, wch**argv)
+    : argc_(argc), argv_(argv), have_local_args_(false)
 {
 
 }
 
 
-template<>
-Win32AppT<Win32AppConfig>::Win32AppT()
-    : argc_(0), argv_(nullptr) {
+Win32App::Win32AppT()
+    : argc_(0), argv_(nullptr), have_local_args_(true) {
     wch* cmdline = GetCommandLineW();
     argv_ = CommandLineToArgvW(cmdline, &argc_);
     if (argv_ == nullptr) {
@@ -26,9 +24,8 @@ Win32AppT<Win32AppConfig>::Win32AppT()
 }
 
 
-template<>
-Win32AppT<Win32AppConfig>::~Win32AppT() {
-    if (argv_ != nullptr) {
+Win32App::~Win32AppT() {
+    if (have_local_args_ && argv_ != nullptr) {
         LocalFree(argv_);
     }
 }

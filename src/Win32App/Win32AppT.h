@@ -8,8 +8,10 @@ public:
     typedef Config_ Config;
 
 private:
-    int argc_;
-    wch** argv_;
+    // A flag to deterinmine if we have a local copy of the command-line args
+    bool    have_local_args_;
+    int     argc_;
+    wch**   argv_;
 
 public:
     Win32AppT();
