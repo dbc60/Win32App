@@ -20,10 +20,9 @@ const LEVELS Logger::warning = {LL_WARNING, "warning"};
 const LEVELS Logger::error = {LL_ERROR, "error"};
 const LEVELS Logger::fatal = {LL_FATAL, "fatal"};
 
-
+std::unique_ptr<g3::SinkHandle<LogSink>> Logger::sink_;
 
 Logger::LoggerG3LogT() {
-
 }
 
 
@@ -31,13 +30,13 @@ void
 Logger::initLogging(const char* log_prefix,
                     const char* log_path) {
     static std::unique_ptr<g3::LogWorker> worker{g3::LogWorker::createLogWorker()};
-    auto sink = worker->addSink(std2::make_unique<LogSink>(log_prefix, log_path),
-                                &LogSink::save);
+    sink_ = std::move(worker->addSink(std::make_unique<LogSink>(log_prefix, log_path),
+                            &LogSink::save));
 
     // Initialize the logger so it can receive LOG calls
     g3::initializeLogging(worker.get());
-    std::future<void> received = sink->call(&LogSink::setMaxLogSize,
-                                            static_cast<int>(MEGABYTES(10)));
+    //std::future<void> received = sink->call(&LogSink::setMaxLogSize,
+    //                                        static_cast<int>(MEGABYTES(10)));
 }
 
 
@@ -112,4 +111,12 @@ Logger::LogLevelToString(u32 ll) {
     }
 
     return result;
+}
+
+
+void
+Logger::setLogFilter(std::vector<LEVELS> filter) {
+    // Give the consumer thread a chance to empty the queue
+    std::this_thread::yield();
+    std::future<void> received = sink_->call(&LogSink::setLogFilter, filter);
 }

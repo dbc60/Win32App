@@ -13,6 +13,10 @@ public:
     typedef Config_                     Config;
     typedef typename Config::LogSink    LogSink;
 
+private:
+    static std::unique_ptr<g3::SinkHandle<LogSink>> sink_;
+
+public:
     static const LEVELS trace;
     static const LEVELS debug;
     static const LEVELS verbose;
@@ -25,4 +29,5 @@ public:
     static void initLogging(const char* log_prefix, const char* log_path);
     static u32 StringToLogLevel(const std::string& log_level);
     static std::string LogLevelToString(u32 ll);
+    static void setLogFilter(std::vector<LEVELS> filter);
 };

@@ -13,10 +13,13 @@ struct LogVSOutputHelper;
 * \param log_prefix is the 'name' of the binary, this give the log name 'LOG-'name'-...
 * \param log_directory gives the directory to put the log files */
 class LogVSOutputWindowSink {
+public:
     using IgnoreLogLevelsFilter = std::vector<LEVELS>;
 
+private:
     // Forward log LEVELS that are not in the filter
     IgnoreLogLevelsFilter               filter_;
+    std::mutex                          mutex_filter_;
     std::unique_ptr<LogVSOutputHelper>  pimpl_;
 
 public:
@@ -38,6 +41,5 @@ public:
     void setFlushPolicy(size_t flush_policy);
     void flush();
 
-
-    void setMaxLogSize(int max_file_size_in_bytes);
+    void setLogFilter(std::vector<LEVELS> filter);
 };

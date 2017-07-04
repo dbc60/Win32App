@@ -59,8 +59,14 @@ int wmain(int argc, wch** argv) {
         processCommandLine(argc, argv);
     }
 
-    LOG(Logger::trace) << "trace-level message";
-    LOG(Logger::debug) << "debug-level message";
+    LOG(Logger::trace) << "trace-level not logged";
+    LOG(Logger::debug) << "debug-level not logged";
+
+    Logger::setLogFilter(std::vector<LEVELS>{});
+
+    LOG(Logger::trace) << "trace-level logged";
+    LOG(Logger::debug) << "debug-level logged";
+
     LOG(Logger::info) << "App end";
 
     return 0;

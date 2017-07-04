@@ -50,7 +50,6 @@ struct LogVSOutputHelper {
     ~LogVSOutputHelper();
 
     //void setMaxArchiveLogCount(int size);
-    void setMaxLogSize(int size);
     void fileWrite(std::string message);
     void fileWriteWithoutRotate(std::string message);
     void flushPolicy();
@@ -75,8 +74,6 @@ struct LogVSOutputHelper {
     //std::string log_prefix_backup_;
     std::unique_ptr<std::ofstream> outptr_;
     steady_time_point steady_start_time_;
-    int max_log_size_;
-    int max_archive_log_count_;
     std::streamoff cur_log_size_;
     size_t flush_policy_;
     size_t flush_policy_counter_;
@@ -87,28 +84,8 @@ LogVSOutputHelper::LogVSOutputHelper(const std::string& log_prefix, const std::s
     , steady_start_time_(std::chrono::steady_clock::now())
     , flush_policy_(flush_policy)
     , flush_policy_counter_(flush_policy) {
-    //log_prefix_backup_ = prefixSanityFix(log_prefix);
-    //max_log_size_ = 524288000;
-    max_archive_log_count_ = 10;
 
-    //auto logfile = changeLogFile(log_directory, log_prefix_backup_);
     assert((nullptr != outptr_) && "cannot open log file at startup");
-}
-
-/**
-* Max number of archived logs to keep.
-* @param max_size
-*/
-//void LogVSOutputHelper::setMaxArchiveLogCount(int max_size) {
-//    max_archive_log_count_ = max_size;
-//}
-
-/**
-* Set the max file size in bytes.
-* @param max_size
-*/
-void LogVSOutputHelper::setMaxLogSize(int max_size) {
-    max_log_size_ = max_size;
 }
 
 LogVSOutputHelper::~LogVSOutputHelper() {

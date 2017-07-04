@@ -30,7 +30,7 @@ LogVSOutputWindowSink::LogVSOutputWindowSink(const std::string& log_prefix,
                                              const std::string& log_directory,
                                              std::vector<LEVELS> filter)
     : pimpl_(new LogVSOutputHelper(log_prefix, log_directory))
-    , filter_(std::move(filter)) {
+    , filter_(filter) {
 }
 
 
@@ -41,7 +41,12 @@ LogVSOutputWindowSink::~LogVSOutputWindowSink() {
 /// @param logEntry to write to file
 void LogVSOutputWindowSink::save(g3::LogMessageMover logEntry) {
     auto level = logEntry.get()._level;
-    bool is_not_in_filter = (filter_.end() == std::find(filter_.cbegin(), filter_.cend(), level));
+    bool is_not_in_filter;
+    
+    {
+        std::lock_guard<std::mutex> lock(mutex_filter_);
+        is_not_in_filter = (filter_.end() == std::find(filter_.cbegin(), filter_.cend(), level));
+    }
 
     if (is_not_in_filter) {
         pimpl_->fileWrite(logEntry.get().toString());
@@ -90,11 +95,8 @@ void LogVSOutputWindowSink::flush() {
 }
 
 
-
-/**
-* Set the max log size in bytes.
-* @param max_file_size
-*/
-void LogVSOutputWindowSink::setMaxLogSize(int max_file_size) {
-    pimpl_->setMaxLogSize(max_file_size);
+void LogVSOutputWindowSink::setLogFilter(std::vector<LEVELS> filter) {
+    std::lock_guard<std::mutex> lock(mutex_filter_);
+    filter_.clear();
+    filter_ = filter;
 }
