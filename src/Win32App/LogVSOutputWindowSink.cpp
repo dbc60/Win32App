@@ -1,4 +1,5 @@
 /** ==========================================================================
+* 2017 by Doug Cuthbertson, and adapted from the public domain code written by
 * 2015 by KjellKod.cc
 *
 * This code is PUBLIC DOMAIN to use at your own risk and comes
@@ -53,24 +54,6 @@ void LogVSOutputWindowSink::save(g3::LogMessageMover logEntry) {
     }
 }
 
-/// Attempt to change the current log file to another name/location.
-/// @return filename with full path if successful, else empty string
-//std::string LogVSOutputWindowSink::changeLogFile(const std::string& log_directory, const std::string& new_name) {
-//    return pimpl_->changeLogFile(log_directory, new_name);
-//}
-
-/// @return the current file name to write to
-//std::string LogVSOutputWindowSink::logFileName() {
-//    return pimpl_->logFileName();
-//}
-
-/**
-* Set the max number of archived logs.
-* @param max_size
-*/
-//void LogVSOutputWindowSink::setMaxArchiveLogCount(int max_size) {
-//    pimpl_->setMaxArchiveLogCount(max_size);
-//}
 
 /**
 * Flush policy: Default is every single time (i.e. policy of 1).

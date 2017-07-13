@@ -1,0 +1,6 @@
+[submodule "thirdparty/g3log"]
+	path = thirdparty/g3log
+	url = git@github.com:dbc60/g3log.git
+[submodule "thirdparty/g3sinks"]
+	path = thirdparty/g3sinks
+	url = git@github.com:dbc60/g3sinks.git

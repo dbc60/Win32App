@@ -1,3 +1,7 @@
+/* ========================================================================
+Author: Douglas B. Cuthbertson
+(C) Copyright 2015 by Douglas B. Cuthbertson. All Rights Reserved.
+======================================================================== */
 #include "Win32AppConfig.h"
 
 

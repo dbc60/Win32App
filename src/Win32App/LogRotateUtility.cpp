@@ -15,7 +15,6 @@
 #include <algorithm>
 #include <g3log/time.hpp>
 #include <regex>
-#include "g3sinks/g3sinks_filesystem.hpp"
 #include <ios>
 #include <fstream>
 #include <iomanip>

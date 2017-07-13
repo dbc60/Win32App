@@ -1,3 +1,7 @@
+/* ========================================================================
+Author: Douglas B. Cuthbertson
+(C) Copyright 2017 by Douglas B. Cuthbertson. All Rights Reserved.
+======================================================================== */
 #include "LoggerG3LogT.h"
 #include "Win32AppConfig.h"
 
